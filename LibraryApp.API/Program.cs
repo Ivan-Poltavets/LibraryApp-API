@@ -8,6 +8,7 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 {
     options.UseMySQL(connectionString);
 });
+builder.Services.AddData();
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
