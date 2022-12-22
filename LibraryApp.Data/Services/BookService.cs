@@ -26,9 +26,14 @@ namespace LibraryApp.Data.Services
             return _context.Book.Where(x => x.Price == 0).ToList();
         }
 
-        public async Task<Book> GetBookAsync(int id)
+        public async Task<Book?> GetBookAsync(int id)
         {
-            return await _context.Book.FindAsync(id);
+            var book = await _context.Book.FindAsync(id);
+            if(book is null)
+            {
+                return null;
+            }
+            return book;
         }
 
         public async Task<Book> CreateBookAsync(BookDto dto)

@@ -9,5 +9,5 @@ public interface IBookService
     Task DeleteBookAsync(int id);
     List<Book> GetFreeBooks();
     List<Book> GetPaidBooks();
-    Task<Book> GetBookAsync(int id);
+    Task<Book?> GetBookAsync(int id);
 }
