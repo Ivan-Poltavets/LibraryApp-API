@@ -31,7 +31,7 @@ namespace LibraryApp.Data.Services
             return await _context.Book.FindAsync(id);
         }
 
-        public async void CreateBookAsync(BookDto dto)
+        public async Task<Book> CreateBookAsync(BookDto dto)
         {
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(dto.Image.FileName)}";
             var path = Path.Combine("wwwroot", "BookImages", fileName);
@@ -44,9 +44,11 @@ namespace LibraryApp.Data.Services
             book.Image = fileName;
             await _context.Book.AddAsync(book);
             await _context.SaveChangesAsync();
+
+            return book;
         }
 
-        public async void DeleteBookAsync(int id)
+        public async Task DeleteBookAsync(int id)
         {
             var book = _context.Book.Find(id);
             if (book is not null)

@@ -2,4 +2,8 @@
 *.sln
 bin/
 obj/
-*.csproj
+
+
+*.png
+*.jpg
+*.jpeg

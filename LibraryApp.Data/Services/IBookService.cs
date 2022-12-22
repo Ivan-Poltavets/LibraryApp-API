@@ -5,8 +5,8 @@ namespace LibraryApp.Data.Services
 {
     public interface IBookService
     {
-        void CreateBookAsync(BookDto dto);
-        void DeleteBookAsync(int id);
+        Task<Book> CreateBookAsync(BookDto dto);
+        Task DeleteBookAsync(int id);
         List<Book> GetFreeBooks();
         List<Book> GetPaidBooks();
         Task<Book> GetBookAsync(int id);

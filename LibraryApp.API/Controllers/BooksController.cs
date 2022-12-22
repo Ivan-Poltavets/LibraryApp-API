@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using LibraryApp.Data.Services;
 using Microsoft.AspNetCore.Authorization;
+using LibraryApp.Data.Dtos;
 
 namespace LibraryApp.API.Controllers
 {
@@ -38,6 +39,19 @@ namespace LibraryApp.API.Controllers
                 return Ok(book);
 
             return NotFound(id);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateBookAsync([FromForm] BookDto dto)
+        {
+            var book = await _bookService.CreateBookAsync(dto);
+            return Ok(book);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBookAsync(int id){
+            await _bookService.DeleteBookAsync(id);
+            return NoContent();
         }
     }
 }
