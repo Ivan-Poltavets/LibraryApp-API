@@ -6,7 +6,6 @@ using LibraryApp.Data.Dtos;
 namespace LibraryApp.API.Controllers;
 
 [Route("api/[controller]")]
-[Authorize]
 [ApiController]
 public class BooksController : ControllerBase
 {
