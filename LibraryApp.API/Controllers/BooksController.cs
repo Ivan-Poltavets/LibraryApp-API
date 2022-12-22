@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using LibraryApp.Data.Services;
-using Microsoft.AspNetCore.Authorization;
 using LibraryApp.Data.Dtos;
 
 namespace LibraryApp.API.Controllers;

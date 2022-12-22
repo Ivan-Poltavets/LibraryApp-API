@@ -29,7 +29,7 @@ public class AuthController : ControllerBase
         var claims = new List<Claim> { new Claim(ClaimTypes.NameIdentifier, id.ToString()) };
         var claimsIdentity = new ClaimsIdentity(claims, "Cookies");
         await http.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-        return Ok();
+        return Ok(id);
     }
 
     [HttpPost]
