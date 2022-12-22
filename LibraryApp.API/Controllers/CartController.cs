@@ -1,26 +1,26 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using LibraryApp.Data;
+using LibraryApp.Data.Services;
 
-namespace LibraryApp.API.Controllers
+namespace LibraryApp.API.Controllers;
+
+[Route("api/[controller]")]
+[Authorize]
+[ApiController]
+public class CartController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [Authorize]
-    [ApiController]
-    public class CartController : ControllerBase
+    private readonly ICartService _cartService;
+
+    public CartController(ICartService cartService)
     {
-        private readonly DatabaseContext _context;
+        _cartService = cartService;
+    }
 
-        public CartController(DatabaseContext context)
-        {
-            _context = context;
-        }
-
-        [HttpPost]
-        public IActionResult AddItemToCart(int id){
-
-            var cla = HttpContext.User.Identity.Name;
-            return Ok();
-        }
+    [HttpPost]
+    public async Task<IActionResult> AddItemToCartAsync(int id)
+    {
+        var userId = int.Parse(HttpContext.User.Claims.ElementAt(0).Value);
+        await _cartService.AddItemToCartAsync(id, userId);
+        return Ok();
     }
 }

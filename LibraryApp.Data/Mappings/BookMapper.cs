@@ -2,13 +2,12 @@
 using LibraryApp.Data.Dtos;
 using LibraryApp.Data.Entities;
 
-namespace LibraryApp.Data.Mappings
+namespace LibraryApp.Data.Mappings;
+
+public class BookMapper : Profile
 {
-    public class BookMapper : Profile
+    public BookMapper()
     {
-        public BookMapper()
-        {
-            CreateMap<BookDto, Book>();
-        }
+        CreateMap<BookDto, Book>();
     }
 }

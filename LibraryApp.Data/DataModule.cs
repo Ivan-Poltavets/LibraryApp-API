@@ -1,16 +1,16 @@
 ﻿using LibraryApp.Data.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace LibraryApp.Data
+namespace LibraryApp.Data;
+
+public static class DataModule
 {
-    public static class DataModule
+    public static IServiceCollection AddData(this IServiceCollection services)
     {
-        public static IServiceCollection AddData(this IServiceCollection services)
-        {
-            services
-                .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddScoped<IBookService, BookService>();
-            return services;
-        }
+        services
+            .AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        services.AddScoped<IBookService, BookService>();
+        services.AddScoped<ICartService, CartService>();
+        return services;
     }
 }
