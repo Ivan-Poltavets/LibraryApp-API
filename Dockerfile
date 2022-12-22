@@ -3,12 +3,13 @@ WORKDIR /app
 
 
 COPY *.sln .
-COPY LibraryApp.API/*.csproj ./LibraryApp.API
-COPY LibraryApp.Data/*.csproj ./LibraryApp.Data
-RUN dotnet restore
+COPY LibraryApp.API/LibraryApp.API.csproj ./LibraryApp.API/
+COPY LibraryApp.Data/LibraryApp.Data.csproj ./LibraryApp.Data/
+RUN dotnet restore ./LibraryApp.API/
+RUN dotnet restore ./LibraryApp.Data/
 
-COPY LibraryApp.API/. ./LibraryApp.API
-COPY LibraryApp.Data/. ./LibraryApp.Data
+COPY LibraryApp.API/ ./LibraryApp.API
+COPY LibraryApp.Data/ ./LibraryApp.Data
 WORKDIR /app/LibraryApp.API
 RUN dotnet publish -c Release -o out
 
