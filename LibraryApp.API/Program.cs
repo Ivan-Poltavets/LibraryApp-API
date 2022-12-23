@@ -1,16 +1,14 @@
 using LibraryApp.Data;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("MySQL");
-builder.WebHost.UseKestrel(options =>
-{
-    options.Listen(IPAddress.Any,
-        Convert.ToInt32(Environment.GetEnvironmentVariable("PORT")));
+//builder.WebHost.UseKestrel(options =>
+//{
+//    options.Listen(IPAddress.Any,
+//        Convert.ToInt32(Environment.GetEnvironmentVariable("PORT")));
 
-});
+//});
 builder.Services.AddDbContext<DatabaseContext>(options =>
 {
     options.UseMySQL(connectionString);
@@ -20,8 +18,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options => options.LoginPath = "/api/login");
+
 builder.Services.AddAuthorization();
 builder.Services.AddCors(x =>
 {
@@ -35,7 +32,6 @@ builder.Services.AddCors(x =>
 });
 var app = builder.Build();
 
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -44,7 +40,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
-app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();
