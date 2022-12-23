@@ -2,6 +2,7 @@
 using AutoMapper;
 using LibraryApp.Data.Dtos;
 using LibraryApp.Data.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace LibraryApp.Data.Services
 {
@@ -9,6 +10,8 @@ namespace LibraryApp.Data.Services
     {
         private readonly DatabaseContext _context;
         private readonly IMapper _mapper;
+
+        public static string WebRootPath = Path.Combine("wwwroot", "BookImages");
 
         public BookService(DatabaseContext context, IMapper mapper)
         {
@@ -38,19 +41,32 @@ namespace LibraryApp.Data.Services
 
         public async Task<Book> CreateBookAsync(BookDto dto)
         {
-            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(dto.Image.FileName)}";
-            var path = Path.Combine("wwwroot", "BookImages", fileName);
-            using (var stream = new FileStream(path, FileMode.Create))
-            {
-                await dto.Image.CopyToAsync(stream);
-            }
+            var fileName = await CreateFileAsync(dto.Image);
             Book book = new();
-            book = _mapper.Map(dto, book);
+            _mapper.Map(dto, book);
             book.Image = fileName;
             await _context.Book.AddAsync(book);
             await _context.SaveChangesAsync();
 
             return book;
+        }
+
+        public async Task<Book> UpdateBookAsync(int id, BookDto dto)
+        {
+            var item = await _context.Book.FindAsync(id);
+            if(item is not null)
+            {
+                var file = new FileInfo(Path.Combine(WebRootPath, item.Image));
+                file.Delete();
+
+                var fileName = await CreateFileAsync(dto.Image);
+                _mapper.Map(dto, item);
+                item.Image = fileName;
+
+                _context.Book.Update(item);
+                await _context.SaveChangesAsync();
+            }
+            return item;
         }
 
         public async Task DeleteBookAsync(int id)
@@ -61,6 +77,17 @@ namespace LibraryApp.Data.Services
                 _context.Remove(book);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        private async Task<string> CreateFileAsync(IFormFile image)
+        {
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(image.FileName)}";
+            var path = Path.Combine(WebRootPath, fileName);
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                await image.CopyToAsync(stream);
+            }
+            return fileName;
         }
     }
 }

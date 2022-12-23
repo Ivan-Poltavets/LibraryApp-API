@@ -46,6 +46,13 @@ public class BooksController : ControllerBase
         return Ok(book);
     }
 
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateBookAsync(int id, [FromForm] BookDto dto)
+    {
+        var updated = await _bookService.UpdateBookAsync(id, dto);
+        return Ok(updated);
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteBookAsync(int id){
         await _bookService.DeleteBookAsync(id);
