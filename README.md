@@ -18,6 +18,14 @@ https://.../api/books/{id} - getting book by id
 
 https://.../api/books/{id}/image - getting image by book id
 
+https://.../api/cart/{userId} - getting all items in the cart 
+
 ### With POST method:
 
-Soon...
+https://.../api/cart - add book by id to cart
+
+Parameters: bookId(integer), userId(integer)
+
+https://.../api/cart/order - create order from the cart
+
+Parameters: userId(integer)
